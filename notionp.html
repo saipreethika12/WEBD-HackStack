@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Project IITG</title>
+    <style>
+      .box1 {
+        font-family: "Permanent Marker", cursive;
+
+        font-size: 50px;
+        color: black;
+        font-size: 70px;
+        margin-left: 10px;
+        text-shadow: 1px 1px 3px grey;
+      }
+
+      .item2 {
+        float: right;
+      }
+      .a {
+        padding: 10px;
+        font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+      }
+      .b {
+        margin-top: 180px;
+        margin-left: 50px;
+        color: white;
+        background-color: black;
+        width: 150px;
+        text-align: center;
+        padding: 5px;
+        border-radius: 7px;
+      }
+
+      .opts {
+        margin-top: 0px;
+        background-color: rgb(189, 204, 204);
+        padding: 20px;
+      }
+      .body {
+        display: flex;
+        flex-direction: row;
+      }
+      .row1 {
+        display: flex;
+        flex-direction: row;
+        margin: 30px;
+        margin-left: 30px;
+        margin-right: auto;
+      }
+      .row2 {
+        display: flex;
+        flex-direction: row;
+        margin: 30px;
+        margin-left: 30px;
+        margin-right: auto;
+      }
+      .box {
+        margin: 50px;
+        border-radius: 2px;
+        box-shadow: 10px 5px 5px black;
+      }
+
+      input {
+        border-radius: 15px;
+        padding: 12px;
+        height: 12px;
+        text-align: center;
+        background-color: rgb(195, 203, 203);
+        border: 1.7px solid black;
+      }
+      input ::placeholder {
+        color: white;
+      }
+
+      .right {
+        float: right;
+      }
+      .box :hover {
+        border-radius: 3px;
+        border-color: black;
+        border-width: 15px;
+        opacity: 0.3;
+      }
+      #search-container {
+        float: right;
+        margin-top: 25px;
+      }
+      #search-button {
+        padding: 10px;
+        border-radius: 50px;
+        background-color: rgb(190, 195, 195);
+        color: rgb(106, 104, 104);
+        border: 1.7px solid black;
+        width: 100px;
+      }
+      .btn :hover {
+        opacity: 0.5;
+      }
+      body {
+        background-color: rgb(214, 220, 220);
+      }
+      .Movies {
+        padding: 20px;
+        align-items: center;
+        font-family: "Secular One", sans-serif;
+      }
+      .body .opts .a a[data-switcher] {
+        cursor: pointer;
+        display: block;
+      }
+      .body .opts .a.is-active a[data-switcher] {
+        background-color: rgb(230, 221, 221);
+        padding: 12px;
+        border-radius: 7px;
+      }
+      .body .opts .a:hover a[data-switcher] {
+        background-color: rgb(230, 221, 221);
+        padding: 12px;
+        border-radius: 7px;
+      }
+      .Movies {
+        display: none;
+      }
+      .Movies.is-active {
+        display: block;
+      }
+      #opage {
+        border-radius: 5px;
+        background-color: white;
+        align-items: center;
+        margin-left: 500px;
+        margin-right: 100px;
+        margin-top: 200px;
+        box-shadow: 10px 5px 5px black;
+      }
+    </style>
+    <script>
+      function searchTMDB(searchTerm) {
+        const apiKey = "3570340d84b54972f6ec093729556f4a";
+
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${searchTerm}`;
+
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                `API request failed with status ${response.status}`
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.results.length === 0) {
+              console.log(data);
+              NoResults();
+
+              return;
+            }
+
+            const movie = data.results[0];
+            const Title = movie.title;
+            const Overview = movie.overview;
+            const ReleaseDate = movie.release_date;
+            const poster = movie.poster_path;
+
+            displayMovieDetails(Title, Overview, ReleaseDate, poster);
+          })
+          .catch((error) => {
+            console.error("API request failed:", error);
+          });
+      }
+
+      function NoResults() {
+        const resultsContainer = document.getElementById("results-container");
+        resultsContainer.innerHTML = "<p>No results found.</p>";
+      }
+      function displayMovieDetails(title, overview, releaseDate, posterPath) {
+        const baseUrl = "https://image.tmdb.org/t/p/w500";
+        const posterUrl = `${baseUrl}/${posterPath}`;
+
+        const movieDetails = `<h1>${title}</h1>
+                        <img src="${posterUrl}" alt="${title}" />
+                        <p>${overview}</p>
+                        <p>Release Date: ${releaseDate}</p>`;
+
+        const moviesContainer = document.querySelector(".Movies");
+        moviesContainer.innerHTML = movieDetails;
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="search-container">
+      <input type="text" id="search-input" placeholder="Enter a movie title" />
+      <button class="btn" id="search-button">Search</button>
+    </div>
+    <div class="box1">
+      <img
+        src="https://scalebranding.com/wp-content/uploads/2021/09/IP-SB.jpg"
+        height="60"
+      />
+      <a class="item1">Movies</a>
+    </div>
+
+    <hr />
+
+    <div class="body">
+      <div class="opts">
+        <div class="a is-active">
+          <a data-switcher data-tab="1">Home</a>
+        </div>
+        <hr />
+        <div class="a">
+          <a data-switcher data-tab="2">All Team</a>
+        </div>
+        <hr />
+        <div class="a"><a data-switcher data-tab="3">Services</a></div>
+        <hr />
+        <div class="a"><a data-switcher data-tab="4">Designers</a></div>
+        <hr />
+        <div class="a"><a data-switcher data-tab="5">Mentors</a></div>
+        <hr />
+        <div class="add">
+          <button class="b">+ADD</button>
+        </div>
+      </div>
+      <aside>
+        <section class="pages">
+          <div class="Movies is-active" data-page="1">
+            <div class="row1">
+              <div class="box" id="one">
+                <img
+                  src="https://assets-in.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/sita-ramam-et00329656-30-05-2022-06-32-41.jpg"
+                  height="440"
+                />
+              </div>
+
+              <div class="box" id="two">
+                <img
+                  src="https://c8.alamy.com/comp/P1K710/mahanati-indian-poster-in-telugu-keerthi-suresh-2018-vyjajanthi-moviescourtesy-everett-collection-P1K710.jpg"
+                  height="440"
+                />
+              </div>
+              <div class="box" id="three">
+                <img
+                  src="https://www.filmibeat.com/ph-big/2017/05/baahubali-2-the-conclusion_149577721640.jpg"
+                  height="440"
+                />
+              </div>
+            </div>
+            <div class="row2">
+              <div class="box">
+                <img
+                  src="https://m.media-amazon.com/images/M/MV5BMjM0MTc0M2EtMGE0Yy00MTFjLWI3MTgtNDdmYzZmNWY1YTg3XkEyXkFqcGdeQXVyMjUxMTY3ODM@.V1.jpg"
+                  height="440"
+                />
+              </div>
+
+              <div class="box">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ74ZmFW94nh_LJTMFyNsvUE0-zKXPZKwZ3Cg&usqp=CAU"
+                  height="440"
+                />
+              </div>
+              <div class="box">
+                <img
+                  src="https://preview.redd.it/8g3qkrzmno881.jpg?auto=webp&s=af760f5d6a67487162efa3450ddbbbe28ce03488"
+                  height="440"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="Movies" data-page="2" id="opage">
+            This is <b>ALL TEAM</b> page
+          </div>
+          <div class="Movies" data-page="3" id="opage">
+            This is <b> Services</b> page
+          </div>
+          <div class="Movies" data-page="4" id="opage">
+            This is <b> Designers</b> page
+          </div>
+          <div class="Movies" data-page="5" id="opage">
+            This is <b>Mentors</b> page
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <script>
+      const searchInput = document.getElementById("search-input");
+      const searchButton = document.getElementById("search-button");
+
+      searchButton.addEventListener("click", () => {
+        const searchTerm = searchInput.value.trim();
+
+        searchTMDB(searchTerm);
+      });
+    </script>
+    <script>
+      window.onload = () => {
+        const tabSwitchers = document.querySelectorAll("[data-switcher]");
+        for (let i = 0; i < tabSwitchers.length; i++) {
+          const tabSwitcher = tabSwitchers[i];
+
+          tabSwitcher.addEventListener("click", () => {
+            const pageId = tabSwitcher.dataset.tab;
+
+            document
+              .querySelectorAll(".body .opts .a")
+              .forEach((element) => element.classList.remove("is-active"));
+            tabSwitcher.parentNode.classList.add("is-active");
+
+            changePage(pageId);
+          });
+        }
+      };
+
+      function changePage(pageId) {
+        const movies = document.querySelectorAll(".Movies");
+        movies.forEach((movie) => movie.classList.remove("is-active"));
+
+        const nextPage = document.querySelector(
+          `.Movies[data-page="${pageId}"]`
+        );
+        nextPage.classList.add("is-active");
+      }
+    </script>
+  </body>
+</html>
